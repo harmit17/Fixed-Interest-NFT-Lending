@@ -1,0 +1,46 @@
+/* Enable hover only on non-touch devices */
+.gradient1 {
+  position: absolute;
+  top: 3%;
+  left: -40rem;
+  width: 70rem;
+  height: 70rem;
+  background: radial-gradient(#00a76a, rgba(8, 19, 47, 0), transparent);
+  opacity: 0.15;
+}
+
+.gradient2 {
+  position: absolute;
+  bottom: -30rem;
+  right: -35rem;
+  width: 80rem;
+  height: 80rem;
+  background: radial-gradient(#1e4dd8, rgba(8, 19, 47, 0), transparent);
+  opacity: 0.4;
+}
+
+.gradient3 {
+  position: absolute;
+  bottom: -55rem;
+  right: -40rem;
+  width: 70rem;
+  height: 70rem;
+  background: radial-gradient(#00a76a, rgba(8, 19, 47, 0), transparent);
+  opacity: 0.4;
+}
+/* Mobile */
+@media (max-width: 700px) {
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
