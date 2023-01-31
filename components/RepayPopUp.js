@@ -6,15 +6,19 @@ import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import contract from "../artifacts/NFTStake.json";
 import ERC20_contract from "../artifacts/ERC20.json";
+import TransactionPopUp from "./TransactionPopUp";
 export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
   const { address } = useAccount();
-
+  const [loading, setLoading] = useState(false);
+  const [transactionUpdates, setTransactionUpdates] = useState();
+  const [showErrorInTrans, setErrorInTrans] = useState();
   // contract integration
 
   // repay loan
   const repayLoan = async () => {
+    setLoading(true);
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -46,12 +50,16 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
         let amount_ = parseInt(amount);
 
         // token approval
+        setTransactionUpdates(
+          "Authorizing contract to access fDAI of entered value."
+        );
         const tx = await con1.approve(
           CONTRACT_ADDRESS,
           String(amount_ * 10 ** 18)
         );
         await tx.wait();
 
+        setTransactionUpdates("Repaying the entered value of loan.");
         // call repay function from contract
         const con = new ethers.Contract(CONTRACT_ADDRESS, contract, signer);
         const tx1 = await con.repay(
@@ -79,27 +87,41 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
             response.owedDeposit === "0" &&
             response.flowRate === "0"
           ) {
+            setTransactionUpdates(
+              "Creating the interest stream into the contract"
+            );
+
             const txn = await con.createFlowIntoContract(
               daix.address,
               flowrate
             );
             await txn.wait();
+            setLoading(false);
             console.log("stream started");
           } else {
+            setTransactionUpdates(
+              "Updating the interest stream into the contract"
+            );
             const txn = await con.updateFlowIntoContract(
               daix.address,
               flowrate
             );
             await txn.wait();
+            setLoading(false);
             console.log("stream updated");
           }
         } else {
+          setTransactionUpdates(
+            "Deleting the interest stream into the contract"
+          );
           const txn = await con.deleteFlowIntoContract(daix.address);
           await txn.wait();
+          setLoading(false);
           console.log("stream deleted");
         }
       }
     } catch (error) {
+      setErrorInTrans(error.message.substring(0, 40) + "...");
       console.log(error);
     }
   };
@@ -187,6 +209,15 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
         </div>
       </div>
       <div className="overlay" onClick={() => setOpenStake(false)}></div>
+      {loading ? (
+        <TransactionPopUp
+          setLoading={setLoading}
+          transactionUpdates={transactionUpdates}
+          setTransactionUpdates={setTransactionUpdates}
+          showErrorInTrans={showErrorInTrans}
+          setErrorInTrans={setErrorInTrans}
+        />
+      ) : null}
     </div>
   );
 }

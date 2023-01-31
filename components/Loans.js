@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import contract from "../artifacts/NFTStake.json";
+import TransactionPopUp from "./TransactionPopUp";
 export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function Loans() {
@@ -32,7 +33,7 @@ function Loans() {
         // get all staked nfts
         const con = new ethers.Contract(CONTRACT_ADDRESS, contract, signer);
         const loanData = await con.getStakeStructArray(address);
-        // console.log(loanData);
+        console.log(loanData);
         for (let i = 0; i < loanData.length; i++) {
           let isStaked = await con.checkStaked(loanData[i][0], loanData[i][1]);
           let dueAmount = await con.getLoanAmountForToken(
@@ -44,16 +45,23 @@ function Loans() {
           let monthlyInterestRate = yearlyInterestRate / 12;
           // if (!nftData.find((temp) => loadData[i][1] === temp[1])) {
           if (isStaked) {
-            nftData.push([
-              loanData[i][0],
-              parseInt(loanData[i][1]._hex, 16),
-              loanData[i][2],
-              loanData[i][3],
-              loanData[i][4],
-              converted_dueAmount,
-              yearlyInterestRate,
-              monthlyInterestRate,
-            ]);
+            let tmp = true;
+            let count = 0;
+            for (let j = 0; j < nftData.length; j++) {
+              if (nftData[j].includes(loanData[i][0])) tmp = false;
+              count++;
+            }
+            if (tmp === true && count === nftData.length)
+              nftData.push([
+                loanData[i][0],
+                parseInt(loanData[i][1]._hex, 16),
+                loanData[i][2],
+                loanData[i][3],
+                loanData[i][4],
+                converted_dueAmount,
+                yearlyInterestRate,
+                monthlyInterestRate,
+              ]);
           }
           // }
         }
@@ -159,61 +167,66 @@ function Loans() {
       <>
         <div className="p-8 text-[#000] grid-parent-2 ">
           {/* ********* map item start ********** */}
-          {nftData.length > 0
-            ? nftData.map((item, key) => {
-                return (
-                  <div key={key}>
-                    {" "}
-                    <div className="rounded-xl bg-[#16151A]  w-[500px] nft-card-2 flex flex-row items-center">
-                      <div className="m-4 max-w-[100%] rounded-xl overflow-hidden min-w-[100px]">
-                        <Image
-                          src={item[4]}
-                          width={100}
-                          height={100}
-                          alt="randomimage"
-                          className="nft-image "
-                        />
-                      </div>
-                      <div className="flex flex-col justify-between m-2 max-w-[70%] leading-tight text-gray-500">
-                        <p className="font-[700] text-ellipsis--2 text-[#000]">
-                          {item[2]}
-                        </p>
-                        <p className="font-[600] text-ellipsis--2 font-[0.665rem] mt-2 ">
-                          Loan Amount -
-                          <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
-                            {"100 fDAI"}
-                          </span>
-                        </p>
-                        <p className="font-[600] font-[0.665rem]">
-                          Loan Interest -
-                          <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
-                            {item[6]} fDAIx / year (10% APR)
-                          </span>
-                        </p>
-                        <p className="font-[600] font-[0.665rem]">
-                          Due Amount -
-                          <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
-                            {item[5]} fDAI
-                          </span>
-                        </p>
-                      </div>
-                      <div className="ml-auto m-2 max-w-[100%]">
-                        <button
-                          className="border hover:border-[#1E4DD8] bg-[#1E4DD8] hover:bg-[#fff] px-6 mx-2 py-2 text-[#fff] hover:text-[#1E4DD8] font-[700] text-[1.1rem] rounded-lg h-3/5"
-                          onClick={() => {
-                            // setOpenStake(false);
-                            setStakeNftDetails(nftData[key]);
-                            setOpenRepay(true);
-                          }}
-                        >
-                          Repay
-                        </button>
-                      </div>
+          {nftData.length > 0 ? (
+            nftData.map((item, key) => {
+              return (
+                <div key={key}>
+                  {" "}
+                  <div className="rounded-xl bg-[#16151A]  w-[500px] nft-card-2 flex flex-row items-center max-w-[550px]">
+                    <div className="m-4 max-w-[100%] rounded-xl overflow-hidden min-w-[100px]">
+                      <Image
+                        src={item[4]}
+                        width={100}
+                        height={100}
+                        alt="randomimage"
+                        className="nft-image "
+                      />
+                    </div>
+                    <div className="flex flex-col justify-between m-2 max-w-[70%] leading-tight text-gray-500">
+                      <p className="font-[700] text-ellipsis--2 text-[#000]">
+                        {item[2]}
+                      </p>
+                      <p className="font-[600] text-ellipsis--2 font-[0.665rem] mt-2 ">
+                        Loan Amount -
+                        <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
+                          {"100 fDAI"}
+                        </span>
+                      </p>
+                      <p className="font-[600] font-[0.665rem]">
+                        Loan Interest -
+                        <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
+                          {item[6]} fDAIx / year (10% APR)
+                        </span>
+                      </p>
+                      <p className="font-[600] font-[0.665rem]">
+                        Due Amount -
+                        <span className="text-[#1E4DD8] font-[700] font-[0.665rem] ml-2">
+                          {item[5]} fDAI
+                        </span>
+                      </p>
+                    </div>
+                    <div className="ml-auto m-2 max-w-[100%]">
+                      <button
+                        className="border hover:border-[#1E4DD8] bg-[#1E4DD8] hover:bg-[#fff] px-6 mx-2 py-2 text-[#fff] hover:text-[#1E4DD8] font-[700] text-[1.1rem] rounded-lg h-3/5"
+                        onClick={() => {
+                          // setOpenStake(false);
+                          setStakeNftDetails(nftData[key]);
+                          setOpenRepay(true);
+                        }}
+                      >
+                        Repay
+                      </button>
                     </div>
                   </div>
-                );
-              })
-            : "Currently, you don't have any loans! Stake your NFT and take a loan with fixed interest."}
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-[#ffffff] font-600 text-center text-[1.3rem] my-20 max-w-[50%] mx-auto">
+              Currently, you don&lsquo;t have any loans! Stake your NFT and take
+              a loan with fixed interest.
+            </p>
+          )}
           {openRepay ? (
             <RepayPopUp
               setOpenRepay={setOpenRepay}
@@ -226,7 +239,16 @@ function Loans() {
       </>
     );
   } else {
-    return "loading";
+    return (
+      <div className="flex flex-col w-full h-full min-h-[400px] justify-center items-center">
+        <div className="lds-ring my-[40px]">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
   }
 }
 export default Loans;

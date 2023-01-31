@@ -82,28 +82,28 @@ export default function Home() {
 
         <div className="min-h-[100vh] m-auto py-[8rem] bg-[#ffffff] relative z-10">
           <div className="m-auto text-center">
-            <h2 className="font-[700] text-[2.5rem] text-black">
-              How It Works...
+            <h2 className="font-[700] text-[2.5rem] text-black mb-4">
+              How It Works ?
             </h2>
             <div>
-              <ul>
+              <ul className="text-[#000000] grid-ul">
                 <li>
                   Put down an NFT as Collateral and borrow stablecoins against
-                  it. 
+                  it.
                 </li>
-                <li>Take one or more loans</li>
                 <li>
-                  This will pull a stream from you using ACL to pay interest on
-                  your loan.
+                  Take one or more loans. This will pull a stream from you using
+                  ACL to pay interest on your loan.
                 </li>
                 <li>
                   Pay any amount of your loan then the repayment transaction
                   would update your stream down
                 </li>
+                <li>Repay full loan amount and get your NFT back.</li>
+
                 <li>
-                  Repay full loan amount and get your NFT back Just connect your
-                  wallet, stake your NFTs, and apply for loans; that is all. Go
-                  Now!{" "}
+                  Just connect your wallet, stake your NFTs, and apply for loans
+                  ; that is all. Go Now!{" "}
                 </li>
               </ul>
             </div>

@@ -95,42 +95,42 @@ function Assets() {
       setShowAllNfts(false);
     };
   }, [address]);
+  if (showAllNfts)
+    return (
+      <>
+        <div className="p-8 text-[#000] grid-parent ">
+          {/* ********* map item start ********** */}
+          {showAllNfts
+            ? nftMetaData.map((item, key) => {
+                return (
+                  <div key={key}>
+                    {" "}
+                    <div className="rounded-xl bg-[#16151A] h-[400px] w-[200px] nft-card flex flex-col ">
+                      <div className="m-4 max-w-[100%] rounded-xl overflow-hidden">
+                        <Image
+                          src={item ? item.image : ""}
+                          width={280}
+                          height={200}
+                          alt="randomimage"
+                          className="nft-image "
+                        />
+                      </div>
+                      <div className="flex flex-row justify-between m-4 max-w-[100%]">
+                        <p className="font-[600]">{item ? item.name : ""}</p>
+                      </div>
+                      <div className="flex flex-row justify-center m-4 max-w-[100%]">
+                        <button
+                          className="bg-[#1E4DD8] px-6 py-2 mx-2 text-[#ffffff] rounded-lg font-[700] text-[1.1rem]"
+                          onClick={() => {
+                            setOpenStake(true);
+                            setStakeNftDetails(nftData[key]);
+                            setOpenRepay(false);
+                          }}
+                        >
+                          Stake NFT
+                        </button>
 
-  return (
-    <>
-      <div className="p-8 text-[#000] grid-parent ">
-        {/* ********* map item start ********** */}
-        {showAllNfts
-          ? nftMetaData.map((item, key) => {
-              return (
-                <div key={key}>
-                  {" "}
-                  <div className="rounded-xl bg-[#16151A] h-[400px] w-[200px] nft-card flex flex-col ">
-                    <div className="m-4 max-w-[100%] rounded-xl overflow-hidden">
-                      <Image
-                        src={item.image}
-                        width={280}
-                        height={200}
-                        alt="randomimage"
-                        className="nft-image "
-                      />
-                    </div>
-                    <div className="flex flex-row justify-between m-4 max-w-[100%]">
-                      <p className="font-[600]">{item.name}</p>
-                    </div>
-                    <div className="flex flex-row justify-center m-4 max-w-[100%]">
-                      <button
-                        className="bg-[#1E4DD8] px-6 py-2 mx-2 text-[#ffffff] rounded-lg font-[700] text-[1.1rem]"
-                        onClick={() => {
-                          setOpenStake(true);
-                          setStakeNftDetails(nftData[key]);
-                          setOpenRepay(false);
-                        }}
-                      >
-                        Stake NFT
-                      </button>
-
-                      {/* <button
+                        {/* <button
                         className="border border-[#1E4DD8] px-6 mx-2 py-2 text-[#1E4DD8] font-[700] text-[1.1rem] rounded-lg"
                         onClick={() => {
                           setOpenStake(false);
@@ -140,26 +140,26 @@ function Assets() {
                       >
                         Repay
                       </button> */}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
-          : null}
-        {openStake ? (
-          <StakePopUp
-            setOpenStake={setOpenStake}
-            showStakeNftDetails={showStakeNftDetails}
-          />
-        ) : null}
-        {/* {openRepay ? (
+                );
+              })
+            : null}
+          {openStake ? (
+            <StakePopUp
+              setOpenStake={setOpenStake}
+              showStakeNftDetails={showStakeNftDetails}
+            />
+          ) : null}
+          {/* {openRepay ? (
           <RepayPopUp
             setOpenRepay={setOpenRepay}
             showStakeNftDetails={showStakeNftDetails}
           />
         ) : null} */}
 
-        {/* <div className="rounded-xl bg-[#16151A] h-[400px] w-[200px] nft-card ">
+          {/* <div className="rounded-xl bg-[#16151A] h-[400px] w-[200px] nft-card ">
           <div className="m-4 max-w-[100%] rounded-xl overflow-hidden">
             <Image
               src={heroimg2}
@@ -183,10 +183,21 @@ function Assets() {
           </div>
         </div> */}
 
-        {/* ********* map item ends ********** */}
+          {/* ********* map item ends ********** */}
+        </div>
+      </>
+    );
+  else
+    return (
+      <div className="flex flex-col w-full h-full min-h-[400px] justify-center items-center">
+        <div className="lds-ring my-[40px]">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
-    </>
-  );
+    );
 }
 
 export default Assets;

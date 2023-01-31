@@ -6,12 +6,17 @@ import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import contract from "../artifacts/NFTStake.json";
 import ERC721_contract from "../artifacts/ERC721.json";
+import TransactionPopUp from "./TransactionPopUp";
 export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function StakePopUp({ setOpenStake, showStakeNftDetails }) {
   const { address } = useAccount();
+  const [loading, setLoading] = useState(false);
+  const [transactionUpdates, setTransactionUpdates] = useState();
+  const [showErrorInTrans, setErrorInTrans] = useState();
   // contract integration
   const stakeNFT = async () => {
+    setLoading(true);
     try {
       const { ethereum } = window;
       if (ethereum) {
@@ -47,7 +52,9 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
           providerOrSigner: signer,
         });
         const permission = isAuthorized.permissions;
-
+        setTransactionUpdates(
+          "Authorizing contract to manage interest stream."
+        );
         // if permission is not given then give permission
         if (permission === String(0)) {
           const aclApproval = daix.updateFlowOperatorPermissions({
@@ -65,6 +72,7 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
         }
 
         // nft approval
+        setTransactionUpdates("Authorizing contract to access your NFT.");
         const tx = await con1.setApprovalForAll(CONTRACT_ADDRESS, true);
         await tx.wait();
         console.log("nft approved");
@@ -72,6 +80,7 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
         const nft_data = JSON.parse(showStakeNftDetails.metadata);
 
         // call deposit nft function
+        setTransactionUpdates("Staking NFT into contract.");
         const tx1 = await con.depositNFT(
           address,
           showStakeNftDetails.token_address,
@@ -98,16 +107,22 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
           response.owedDeposit === "0" &&
           response.flowRate === "0"
         ) {
+          setTransactionUpdates("Starting interst stream into the contract.");
           const txn = await con.createFlowIntoContract(daix.address, flowrate);
           await txn.wait();
+          setLoading(false);
           console.log("stream started");
         } else {
+          setTransactionUpdates("Updating interst stream into the contract.");
           const txn = await con.updateFlowIntoContract(daix.address, flowrate);
           await txn.wait();
+          setLoading(false);
           console.log("stream updated");
         }
       }
     } catch (error) {
+      setErrorInTrans(error.message.substring(0, 40) + "...");
+      // setTransactionUpdates(error.message);
       console.log(error);
     }
   };
@@ -183,6 +198,15 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
         </div>
       </div>
       <div className="overlay" onClick={() => setOpenStake(false)}></div>
+      {loading ? (
+        <TransactionPopUp
+          setLoading={setLoading}
+          transactionUpdates={transactionUpdates}
+          setTransactionUpdates={setTransactionUpdates}
+          showErrorInTrans={showErrorInTrans}
+          setErrorInTrans={setErrorInTrans}
+        />
+      ) : null}
     </div>
   );
 }
