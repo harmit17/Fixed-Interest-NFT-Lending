@@ -167,7 +167,7 @@ function Loans() {
                     <div className="rounded-xl bg-[#16151A]  w-[500px] nft-card-2 flex flex-row items-center">
                       <div className="m-4 max-w-[100%] rounded-xl overflow-hidden min-w-[100px]">
                         <Image
-                          src={item.image}
+                          src={item ? item.image : ""}
                           width={100}
                           height={100}
                           alt="randomimage"
@@ -176,7 +176,7 @@ function Loans() {
                       </div>
                       <div className="flex flex-col justify-between m-2 max-w-[70%] leading-tight text-gray-500">
                         <p className="font-[700] text-ellipsis--2 text-[#000]">
-                          {item.name}
+                          {item ? item.name : ""}
                         </p>
                         <p className="font-[600] text-ellipsis--2 font-[0.665rem] mt-2 ">
                           Loan Amount -
