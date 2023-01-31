@@ -41,14 +41,14 @@ export default function Home() {
           <div className={styles.gradient1}></div>
           <div className="max-w-[50%] mr-8">
             <p className="px-8 py-1 my-4 bg-[#252A2F] mb-8 text-[#BCBFC1] max-w-max rounded-full tracking-widest font-[0.985rem]">
-              NFT LENDING DESK
+              Fixed-Interest NFT Lending DESK
             </p>
             <h1 className="text-[3.652rem] font-[700] leading-none">
               Unleash the Value of Your NFTs
             </h1>
             <p className="text-[#83888C] text-[1.5rem] mt-[1rem] leading-[1.4] w-4/5">
-              Use your NFT as collateral to borrow wETH, DAI, or USDC from
-              lenders. Repay your loan, and you get your NFT back.
+              Use your NFT as collateral to borrow fDAI, or fUSDC from lenders.
+              Repay your loan and get your NFT back.
             </p>
             <div className="mt-[2rem]">
               <button className="flex py-[1rem] px-[2rem] items-center bg-[#1E4DD8] gap-[0.5rem] whitespace-nowrap text-[1.25rem] font-[700] rounded-lg">
@@ -83,15 +83,30 @@ export default function Home() {
         <div className="min-h-[100vh] m-auto py-[8rem] bg-[#ffffff] relative z-10">
           <div className="m-auto text-center">
             <h2 className="font-[700] text-[2.5rem] text-black">
-              How It Works
+              How It Works...
             </h2>
-          </div>
-        </div>
-        <div className="min-h-[100vh] m-auto py-[8rem] bg-[#ffffff] relative z-10">
-          <div className="m-auto text-center">
-            <h2 className="font-[700] text-[2.5rem] text-black">
-              How It Works
-            </h2>
+            <div>
+              <ul>
+                <li>
+                  Put down an NFT as Collateral and borrow stablecoins against
+                  it. 
+                </li>
+                <li>Take one or more loans</li>
+                <li>
+                  This will pull a stream from you using ACL to pay interest on
+                  your loan.
+                </li>
+                <li>
+                  Pay any amount of your loan then the repayment transaction
+                  would update your stream down
+                </li>
+                <li>
+                  Repay full loan amount and get your NFT back Just connect your
+                  wallet, stake your NFTs, and apply for loans; that is all. Go
+                  Now!{" "}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </main>

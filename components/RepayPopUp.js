@@ -1,11 +1,12 @@
 import Image from "next/image";
 import React from "react";
 import { ethers } from "ethers";
+import { Framework } from "@superfluid-finance/sdk-core";
 import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import contract from "../artifacts/NFTStake.json";
 import ERC20_contract from "../artifacts/ERC20.json";
-export const CONTRACT_ADDRESS = "0x750807e8B8F167ebc54f51dA2cac790F7d32F5b5";
+export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
   const { address } = useAccount();
@@ -22,6 +23,15 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
         if (!provider) {
           console.log("Metamask is not installed, please install!");
         }
+
+        // superfluid part
+        const sf = await Framework.create({
+          chainId: 80001,
+          provider: provider,
+        });
+        const daix = await sf.loadSuperToken("fDAIx");
+
+        //
         const erc20_contract_address = ethers.utils.getAddress(
           "0x15F0Ca26781C3852f8166eD2ebce5D18265cceb7"
         );
@@ -30,10 +40,15 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
           ERC20_contract,
           signer
         );
+
+        //
+        let amount = document.getElementById("amount").value;
+        let amount_ = parseInt(amount);
+
         // token approval
         const tx = await con1.approve(
           CONTRACT_ADDRESS,
-          "100000000000000000000"
+          String(amount_ * 10 ** 18)
         );
         await tx.wait();
 
@@ -43,9 +58,46 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
           address,
           showStakeNftDetails[0],
           showStakeNftDetails[1],
-          100
+          amount_
         );
         await tx1.wait();
+
+        // update the stream for interest
+        // check if the stream is already running and start stream for interest
+        const loanAmount = await con.getTotalLoanAmount(address);
+        if (loanAmount > 0) {
+          let coneverted_loanAmount = parseInt(loanAmount._hex, 16);
+          let interestRate = (coneverted_loanAmount * 10) / 1200;
+          let flowrate = interestRate * 18144000;
+          const response = await daix.getFlow({
+            sender: address,
+            receiver: CONTRACT_ADDRESS,
+            providerOrSigner: signer,
+          });
+          if (
+            response.deposit === "0" &&
+            response.owedDeposit === "0" &&
+            response.flowRate === "0"
+          ) {
+            const txn = await con.createFlowIntoContract(
+              daix.address,
+              flowrate
+            );
+            await txn.wait();
+            console.log("stream started");
+          } else {
+            const txn = await con.updateFlowIntoContract(
+              daix.address,
+              flowrate
+            );
+            await txn.wait();
+            console.log("stream updated");
+          }
+        } else {
+          const txn = await con.deleteFlowIntoContract(daix.address);
+          await txn.wait();
+          console.log("stream deleted");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -75,7 +127,7 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
         </div>
         <div className="m-auto p-2 border-2 border-[#1E4DD8] max-w-max rounded-xl">
           <Image
-            src={JSON.parse(showStakeNftDetails.metadata).image}
+            src={showStakeNftDetails[4]}
             width={100}
             height={100}
             alt="profile"
@@ -85,19 +137,14 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
         <div className="m-4 nft-token-detials border border-[#1E4DD8] rounded-xl p-4 ">
           <div className="flex flex-row max-w-[100%] justify-between px-2 py-[2px] bg-[#d5def9] ">
             <p className="font-[700] text-[#1E4DD8]">Token Address</p>
-            <p className="text-[#000] font-[600]">
-              {showStakeNftDetails.token_address}
-            </p>
+            <p className="text-[#000] font-[600]">{showStakeNftDetails[0]}</p>
           </div>
           <div className="flex flex-row max-w-[100%] justify-between px-2 py-[2px]">
             <p className="font-[700] text-[#1E4DD8]">Token Id</p>
-            <p className="text-[#000] font-[600]">
-              {" "}
-              {showStakeNftDetails.token_id}
-            </p>
+            <p className="text-[#000] font-[600]"> {showStakeNftDetails[1]}</p>
           </div>
           <div className="flex flex-row max-w-[100%] justify-between px-2 py-[2px] bg-[#d5def9]">
-            <p className="font-[700] text-[#1E4DD8]">Total Loan Amount</p>
+            <p className="font-[700] text-[#1E4DD8]">Loan Amount</p>
             <p className="text-[#000] font-[600]">100 fDAI</p>
           </div>
           <div className="flex flex-row max-w-[100%] justify-between px-2 py-[2px]">
@@ -127,6 +174,7 @@ function RepayPopUp({ setOpenRepay, showStakeNftDetails }) {
             type="number"
             className="px-2 py-[2px] repay-input w-full"
             placeholder="Enter Repay Amount"
+            id="amount"
           />
         </div>
         <div className="text-center p-2 sticky bottom-0">

@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import contract from "../artifacts/NFTStake.json";
 import ERC721_contract from "../artifacts/ERC721.json";
-export const CONTRACT_ADDRESS = "0x750807e8B8F167ebc54f51dA2cac790F7d32F5b5";
+export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function StakePopUp({ setOpenStake, showStakeNftDetails }) {
   const { address } = useAccount();
@@ -67,6 +67,7 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
         // nft approval
         const tx = await con1.setApprovalForAll(CONTRACT_ADDRESS, true);
         await tx.wait();
+        console.log("nft approved");
         // nft data
         const nft_data = JSON.parse(showStakeNftDetails.metadata);
 
@@ -80,11 +81,13 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
           nft_data.image
         );
         await tx1.wait();
+        console.log("nft deposited");
 
         // check if the stream is already running and start stream for interest
         const loanAmount = await con.getTotalLoanAmount(address);
         let coneverted_loanAmount = parseInt(loanAmount._hex, 16);
         let interestRate = (coneverted_loanAmount * 10) / 1200;
+        let flowrate = interestRate * 18144000;
         const response = await daix.getFlow({
           sender: address,
           receiver: CONTRACT_ADDRESS,
@@ -95,17 +98,13 @@ function StakePopUp({ setOpenStake, showStakeNftDetails }) {
           response.owedDeposit === "0" &&
           response.flowRate === "0"
         ) {
-          const txn = await con.createFlowIntoContract(
-            daix.address,
-            interestRate
-          );
+          const txn = await con.createFlowIntoContract(daix.address, flowrate);
           await txn.wait();
+          console.log("stream started");
         } else {
-          const txn = await con.updateFlowIntoContract(
-            daix.address,
-            interestRate
-          );
+          const txn = await con.updateFlowIntoContract(daix.address, flowrate);
           await txn.wait();
+          console.log("stream updated");
         }
       }
     } catch (error) {

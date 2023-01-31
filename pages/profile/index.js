@@ -12,7 +12,7 @@ import Assets from "@/components/Assets";
 import Loans from "@/components/Loans";
 import { ethers } from "ethers";
 import contract from "../../artifacts/NFTStake.json";
-export const CONTRACT_ADDRESS = "0x750807e8B8F167ebc54f51dA2cac790F7d32F5b5";
+export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function Index() {
   function classNames(...classes) {

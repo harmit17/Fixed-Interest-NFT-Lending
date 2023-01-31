@@ -108,7 +108,7 @@ function Assets() {
                   <div className="rounded-xl bg-[#16151A] h-[400px] w-[200px] nft-card flex flex-col ">
                     <div className="m-4 max-w-[100%] rounded-xl overflow-hidden">
                       <Image
-                        src={item ? item.image : ""}
+                        src={item.image}
                         width={280}
                         height={200}
                         alt="randomimage"
@@ -116,7 +116,7 @@ function Assets() {
                       />
                     </div>
                     <div className="flex flex-row justify-between m-4 max-w-[100%]">
-                      <p className="font-[600]">{item ? item.name : ""}</p>
+                      <p className="font-[600]">{item.name}</p>
                     </div>
                     <div className="flex flex-row justify-center m-4 max-w-[100%]">
                       <button
