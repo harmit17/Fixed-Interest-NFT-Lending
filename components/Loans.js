@@ -45,23 +45,16 @@ function Loans() {
           let monthlyInterestRate = yearlyInterestRate / 12;
           // if (!nftData.find((temp) => loadData[i][1] === temp[1])) {
           if (isStaked) {
-            let tmp = true;
-            let count = 0;
-            for (let j = 0; j < nftData.length; j++) {
-              if (nftData[j].includes(loanData[i][0])) tmp = false;
-              count++;
-            }
-            if (tmp === true && count === nftData.length)
-              nftData.push([
-                loanData[i][0],
-                parseInt(loanData[i][1]._hex, 16),
-                loanData[i][2],
-                loanData[i][3],
-                loanData[i][4],
-                converted_dueAmount,
-                yearlyInterestRate,
-                monthlyInterestRate,
-              ]);
+            nftData.push([
+              loanData[i][0],
+              parseInt(loanData[i][1]._hex, 16),
+              loanData[i][2],
+              loanData[i][3],
+              loanData[i][4],
+              converted_dueAmount,
+              yearlyInterestRate,
+              monthlyInterestRate,
+            ]);
           }
           // }
         }

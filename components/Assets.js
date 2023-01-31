@@ -110,13 +110,15 @@ function Assets() {
                         <Image
                           src={item ? item.image : ""}
                           width={280}
-                          height={200}
+                          height={280}
                           alt="randomimage"
                           className="nft-image "
                         />
                       </div>
                       <div className="flex flex-row justify-between m-4 max-w-[100%]">
-                        <p className="font-[600]">{item ? item.name : ""}</p>
+                        <p className="font-[600] text-center mx-auto text-[1.2rem]">
+                          {item ? item.name : ""}
+                        </p>
                       </div>
                       <div className="flex flex-row justify-center m-4 max-w-[100%]">
                         <button

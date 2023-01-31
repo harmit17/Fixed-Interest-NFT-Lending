@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import heroimg from "../public/nft-header-visual.webp";
+import { useRouter } from "next/navigation";
 import heroimg2 from "../public/how-to-buy-nft.png";
 // import heroimg3 from "../public/nft1.png";
 // import { QueryClient, QueryClientProvider, useQuery } from "react-query";
@@ -17,10 +18,18 @@ import { useAccount } from "wagmi";
 
 export default function Home() {
   const scrollPosition = useScrollPosition();
+  const router = useRouter();
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
   }
   // ********** RainbowKitProvider **********
+  const getNow = () => {
+    if (address) {
+      router.push("/profile");
+    } else {
+      alert("Connect your wallet first");
+    }
+  };
 
   const { address } = useAccount();
   const [showFoundAdd, setFoundAdd] = useState(false);
@@ -51,7 +60,10 @@ export default function Home() {
               Repay your loan and get your NFT back.
             </p>
             <div className="mt-[2rem]">
-              <button className="flex py-[1rem] px-[2rem] items-center bg-[#1E4DD8] gap-[0.5rem] whitespace-nowrap text-[1.25rem] font-[700] rounded-lg">
+              <button
+                className="relative z-[500] flex py-[1rem] px-[2rem] items-center bg-[#1E4DD8] gap-[0.5rem] whitespace-nowrap text-[1.25rem] font-[700] rounded-lg cursur-pointer"
+                onClick={() => getNow()}
+              >
                 Get Now{" "}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
