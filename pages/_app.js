@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }) {
   const { chains, provider } = configureChains(
     [polygonMumbai, goerli],
     [
-      alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_ID }),
+      alchemyProvider({ apiKey: "HxgUPr9F1aZfO3jgX1HsQUBfhpd49qpa" }),
       publicProvider(),
     ]
   );

@@ -58,7 +58,7 @@ function Loans() {
           }
           // }
         }
-        setNftData(nftData);
+        // setNftData(nftData);
         setLoadData(true);
       }
     } catch (error) {
