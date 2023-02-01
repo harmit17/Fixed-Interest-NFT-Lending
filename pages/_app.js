@@ -25,7 +25,7 @@ import Layout from "@/components/Layout";
 
 export default function App({ Component, pageProps }) {
   const { chains, provider } = configureChains(
-    [polygonMumbai, goerli],
+    [polygonMumbai],
     [
       alchemyProvider({ apiKey: "HxgUPr9F1aZfO3jgX1HsQUBfhpd49qpa" }),
       publicProvider(),
