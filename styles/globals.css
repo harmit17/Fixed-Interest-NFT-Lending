@@ -107,7 +107,7 @@ a {
 .profile-cover {
   content: "";
   height: 60vh;
-  background-image: url("../public/1359e440-8050-11ec-92c5-878c7c8a0a4c.jfif");
+  background-image: url("../public/profile_cover.webp");
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -167,12 +167,12 @@ img.nft-image {
 .nft-card:hover,
 .nft-card-2:hover {
   transform: scale(1.05);
-  transition: all 0.15s linear;
+  transition: ease 0.1s;
 }
 .nft-card:hover img.nft-image,
 .nft-card-2:hover img.nft-image {
   transform: scale(1);
-  transition: all 0.15s linear;
+  transition: all 0.1s;
 }
 
 .nft-token-details {
@@ -218,6 +218,35 @@ img.nft-image {
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.5);
   z-index: 1000000;
 }
+.popup_stream {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* right: 11vw; */
+  transform: translate(-50%, -50%);
+  width: 90vh;
+  max-width: max-content;
+  /* border: 2px solid #1e4dd8; */
+  /* background: radial-gradient(rgba(1, 65, 255, 0.6), rgba(1, 65, 255, 0)); */
+  background: #ffffff;
+  color: #1e4dd8;
+  /* max-height: 80vh; */
+  overflow: auto;
+  overflow-x: hidden;
+  border-radius: 10px;
+  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.5);
+  z-index: 1000000;
+}
+.stream-table {
+  /* border: 2px solid #1e4dd8; */
+
+  /* background: radial-gradient(rgba(1, 65, 255, 0.6), rgba(1, 65, 255, 0)); */
+}
+.sponsers {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
 .overlay {
   position: fixed;
   top: 0;
@@ -228,7 +257,16 @@ img.nft-image {
   backdrop-filter: blur(10px);
   z-index: 5000;
 }
-
+.overlay2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  z-index: 5000;
+}
 .text-ellipsis--2 {
   text-overflow: ellipsis;
   overflow: hidden;

@@ -5,10 +5,13 @@ import styles from "@/styles/Home.module.css";
 import heroimg from "../public/nft-header-visual.webp";
 import { useRouter } from "next/navigation";
 import heroimg2 from "../public/how-to-buy-nft.png";
+import superfluid_logo from "../public/superfluid-logo-dark.svg";
+import polygon_logo from "../public/polygon-logo.svg";
+import thegraph_logo from "../public/The-Graph.png";
 // import heroimg3 from "../public/nft1.png";
 // import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -17,7 +20,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
 
 export default function Home() {
-  const scrollPosition = useScrollPosition();
+  // const scrollPosition = useScrollPosition();
   const router = useRouter();
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -118,6 +121,39 @@ export default function Home() {
                   ; that is all. Go Now!{" "}
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+        {/* ********** third section ********** */}
+        <div className=" flex flex-col justify-center items-center min-h-[80vh] p-8">
+          <h1 className="m-8 text-[700] text-[2.5rem]">Powered By</h1>
+          <div className="sponsers">
+            <div className="bg-white rounded-xl p-4 max-w-[300px] max-h-[300px] h-[200px] flex flex-col justify-center items-center">
+              <Image
+                src={superfluid_logo}
+                alt="superfluid"
+                width="200px"
+                height="150px"
+                className="max-w-[100%] w-[100%] max-h-[100%] h-[100%]"
+              ></Image>
+            </div>
+            <div className="bg-white rounded-xl p-4 max-w-[300px] max-h-[300px] h-[200px] flex flex-col justify-center items-center">
+              <Image
+                src={polygon_logo}
+                alt="polygon"
+                width="200px"
+                height="150px"
+                className="max-w-[100%] w-[100%] max-h-[100%] h-[100%]"
+              ></Image>
+            </div>
+            <div className="bg-white rounded-xl p-4 max-w-[300px] max-h-[300px] h-[200px] flex flex-col justify-center items-center">
+              <Image
+                src={thegraph_logo}
+                alt="polygon"
+                width="200px"
+                height="150px"
+                className="max-w-[100%] w-[100%] max-h-[100%] h-[100%]"
+              ></Image>
             </div>
           </div>
         </div>

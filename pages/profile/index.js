@@ -8,10 +8,11 @@ import heroimg4 from "../../public/warren-umoh-YmTIxQbQo4I-unsplash.jpg";
 
 import { useAccount } from "wagmi";
 import Image from "next/image";
-import Assets from "@/components/Assets";
-import Loans from "@/components/Loans";
+import Assets from "../../components/Assets";
+import Loans from "../../components/Loans";
 import { ethers } from "ethers";
 import contract from "../../artifacts/NFTStake.json";
+import Stream from "../../components/Stream";
 export const CONTRACT_ADDRESS = "0xD906B953a92FC7Cde79eFd2b9EB9f3f3D7795D93";
 
 function Index() {
@@ -25,6 +26,8 @@ function Index() {
   const [add, setAdd] = useState("");
   const [showAssets, setAssets] = useState(true);
   const [showLoans, setLoans] = useState(false);
+  const [showStream, setStream] = useState(false);
+
   const [totalStakedNFTs, setTotalStakedNFTs] = useState();
   const [totalLoanAmount, setTotalLoanAmount] = useState();
   const [interest, setInterest] = useState();
@@ -117,34 +120,49 @@ function Index() {
         </div>
         <div className="mt-[10vh] text-[#ffffff]  py-4 min-h-[50vh] pt-[5rem]">
           <div className="max-w-[100%] m-auto mx-20">
-            <ul className="flex flex-row font-[600] text-[1.5rem] relative z-20 pl-2 cursor-pointer">
+            <ul className="flex flex-row font-[600] text-[1.5rem] relative z-20 pl-2 ">
               <li
-                className={`mr-[20px] px-20 py-8 rounded-t-xl rounded-b-none ${
+                className={`mr-[20px] px-20 py-8 rounded-t-xl rounded-b-none cursor-pointer ${
                   showAssets === true ? "bg-[#1E4DD8] text-[#ffffff]" : ""
                 }`}
                 onClick={() => {
                   setAssets(true);
                   setLoans(false);
+                  setStream(false);
                 }}
               >
                 Assets
               </li>
               <li
-                className={`px-20 py-8 rounded-t-xl rounded-b-none ${
+                className={`px-20 py-8 rounded-t-xl rounded-b-none cursor-pointer ${
                   showLoans === true ? "bg-[#1E4DD8] text-[#ffffff]" : ""
                 }`}
                 onClick={() => {
                   setLoans(true);
                   setAssets(false);
+                  setStream(false);
                 }}
               >
                 Loans
+              </li>
+              <li
+                className={`px-20 py-8 rounded-t-xl rounded-b-none cursor-pointer ${
+                  showStream === true ? "bg-[#1E4DD8] text-[#ffffff]" : ""
+                }`}
+                onClick={() => {
+                  setStream(true);
+                  setLoans(false);
+                  setAssets(false);
+                }}
+              >
+                Stream
               </li>
             </ul>
           </div>
           <div className="profile-card2 max-w-[100%] m-auto min-h-[50vh] mx-20">
             {showAssets ? <Assets /> : null}
             {showLoans ? <Loans /> : null}
+            {showStream ? <Stream /> : null}
           </div>
         </div>
       </div>
