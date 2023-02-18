@@ -29,7 +29,7 @@ function StreamDetailsPopup({
               {flowHistoryDetails[itemNumber].map((item, key) => {
                 return (
                   <tr key={key} className="border-b border-[#404040]">
-                    <td className="text-left p-2 text-[0.865rem] ">
+                    <td className="text-left p-2  text-black">
                       {CONTRACT_ADDRESS
                         ? CONTRACT_ADDRESS.substring(0, 6) +
                           "..." +
@@ -39,13 +39,14 @@ function StreamDetailsPopup({
                           )
                         : ""}
                     </td>
-                    <td className="text-left p-2 text-[0.865rem]  ">
-                      {item.flowRate} fDAIx
+                    <td className="text-left p-2">
+                      {item.flowRate} <span className="text-black">fDAIx</span>
                     </td>
-                    <td className="text-left p-2 text-[0.865rem] ">
-                      {item.totalAmountStreamedUntilTimestamp} fDAIx
+                    <td className="text-left p-2">
+                      {item.totalAmountStreamedUntilTimestamp}{" "}
+                      <span className="text-black">fDAIx</span>
                     </td>
-                    <td className="text-left p-2 text-[0.865rem] ">
+                    <td className="text-left p-2 text-black ">
                       {item.timestamp}
                     </td>
                   </tr>

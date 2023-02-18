@@ -19,7 +19,7 @@ function Stream() {
   const [addCopied, setAddCopied] = useState();
   const [addCopied2, setAddCopied2] = useState();
   const [itemNumber, setItemNumber] = useState();
-  //   const [currentFlowRateInfDAIx, setCurrentFlowRateInfDAIx] = useState();
+  const [currentFlowRateInfDAIx, setCurrentFlowRateInfDAIx] = useState();
   const [flowHistory, setFlowHistory] = useState([]);
   const [flowHistoryDetails, setFlowHistoryDetails] = useState([]);
   const [showflowHistoryInside, setFlowHistoryInside] = useState(false);
@@ -65,57 +65,61 @@ function Stream() {
         data[data.length - 1].flowUpdatedEvents[0].timestamp
       );
       setCurrentFlowRate(data[data.length - 1].currentFlowRate);
+      let temp = Web3.utils.fromWei(
+        data[data.length - 1].currentFlowRate.toString(),
+        "ether"
+      );
+      setCurrentFlowRateInfDAIx(temp);
+      // for (let i = 0; i < data[0].flowUpdatedEvents.length; i++) {
+      //   if (data[0].flowUpdatedEvents.length > flowHistory.length) {
+      //     let temp = parseInt(data[0].flowUpdatedEvents[i].timestamp) * 1000;
+      //     let time = new Date(parseInt(temp));
+      //     let year = time.getFullYear();
+      //     let month;
+      //     if (time.getMonth() === 0) {
+      //       month = "JAN";
+      //     } else if (time.getMonth() === 1) {
+      //       month = "FEB";
+      //     } else if (time.getMonth() === 2) {
+      //       month = "MAR";
+      //     } else if (time.getMonth() === 3) {
+      //       month = "APR";
+      //     } else if (time.getMonth() === 4) {
+      //       month = "MAY";
+      //     } else if (time.getMonth() === 5) {
+      //       month = "JUN";
+      //     } else if (time.getMonth() === 6) {
+      //       month = "JUL";
+      //     } else if (time.getMonth() === 7) {
+      //       month = "AUG";
+      //     } else if (time.getMonth() === 8) {
+      //       month = "SEP";
+      //     } else if (time.getMonth() === 9) {
+      //       month = "OCT";
+      //     } else if (time.getMonth() === 10) {
+      //       month = "NOV";
+      //     } else if (time.getMonth() === 11) {
+      //       month = "DEC";
+      //     }
 
-      for (let i = 0; i < data[0].flowUpdatedEvents.length; i++) {
-        if (data[0].flowUpdatedEvents.length > flowHistory.length) {
-          let temp = parseInt(data[0].flowUpdatedEvents[i].timestamp) * 1000;
-          let time = new Date(parseInt(temp));
-          let year = time.getFullYear();
-          let month;
-          if (time.getMonth() === 0) {
-            month = "JAN";
-          } else if (time.getMonth() === 1) {
-            month = "FEB";
-          } else if (time.getMonth() === 2) {
-            month = "MAR";
-          } else if (time.getMonth() === 3) {
-            month = "APR";
-          } else if (time.getMonth() === 4) {
-            month = "MAY";
-          } else if (time.getMonth() === 5) {
-            month = "JUN";
-          } else if (time.getMonth() === 6) {
-            month = "JUL";
-          } else if (time.getMonth() === 7) {
-            month = "AUG";
-          } else if (time.getMonth() === 8) {
-            month = "SEP";
-          } else if (time.getMonth() === 9) {
-            month = "OCT";
-          } else if (time.getMonth() === 10) {
-            month = "NOV";
-          } else if (time.getMonth() === 11) {
-            month = "DEC";
-          }
-
-          let dt = time.getDate();
-          let flowRT = Web3.utils.fromWei(
-            data[0].flowUpdatedEvents[i].flowRate.toString(),
-            "ether"
-          );
-          let tAS = Web3.utils.fromWei(
-            data[0].flowUpdatedEvents[
-              i
-            ].totalAmountStreamedUntilTimestamp.toString(),
-            "ether"
-          );
-          flowHistory.push({
-            flowRate: flowRT,
-            timestamp: `${month} ${dt} ${year}`,
-            totalAmountStreamedUntilTimestamp: tAS,
-          });
-        }
-      }
+      //     let dt = time.getDate();
+      //     let flowRT = Web3.utils.fromWei(
+      //       data[0].flowUpdatedEvents[i].flowRate.toString(),
+      //       "ether"
+      //     );
+      //     let tAS = Web3.utils.fromWei(
+      //       data[0].flowUpdatedEvents[
+      //         i
+      //       ].totalAmountStreamedUntilTimestamp.toString(),
+      //       "ether"
+      //     );
+      //     flowHistory.push({
+      //       flowRate: flowRT,
+      //       timestamp: `${month} ${dt} ${year}`,
+      //       totalAmountStreamedUntilTimestamp: tAS,
+      //     });
+      //   }
+      // }
     }
     if (data.length > 0) {
       for (let i = 0; i < data.length; i++) {
@@ -426,6 +430,7 @@ function Stream() {
         )}
         <div className="max-w-max my-4 mx-auto">
           <button
+            className="border p-[5px] rounded text-[12px]"
             onClick={() =>
               window.open(
                 `https://app.superfluid.finance/stream/polygon-mumbai/${address}-0xd906b953a92fc7cde79efd2b9eb9f3f3d7795d93-0x5d8b4c2554aeb7e86f387b4d6c00ac33499ed01f`
@@ -435,73 +440,23 @@ function Stream() {
             View More
           </button>
         </div>
+        <h2 className="text-center m-0">Current Flow Rate</h2>
+        <div className="max-w-max my-2 mx-auto text-[1.5rem] font-[600]">
+          {currentFlowRateInfDAIx ? currentFlowRateInfDAIx : "0"} fDAIx
+        </div>
       </div>
       <div className="w-full p-[2rem]">
         <h3 className="font-[700] text-[1.2rem]">Past Transaction</h3>
         <table className="w-full border mt-4">
-          <thead className="bg-white text-[#1E4DD8] ">
+          <thead className="bg-white text-[#1E4DD8]">
             <tr>
               <th className="text-left p-2">To/From</th>
               <th className="text-left p-2">Flow Rate</th>
               <th className="text-left p-2">Total Streamed</th>
               <th className="text-left p-2">Start/end Time</th>
-              <th className="text-left p-2">Details</th>
             </tr>
           </thead>
           <tbody>
-            {flowHistory.length > 0 ? (
-              <>
-                <tr className="border-b">
-                  <td className="text-left p-2 text-[0.865rem]">
-                    {CONTRACT_ADDRESS
-                      ? CONTRACT_ADDRESS.substring(0, 6) +
-                        "..." +
-                        CONTRACT_ADDRESS.substring(
-                          CONTRACT_ADDRESS.length - 5,
-                          CONTRACT_ADDRESS.length
-                        )
-                      : ""}
-                  </td>
-                  <td className="text-left p-2 text-[0.865rem]">
-                    {flowHistory ? flowHistory[1].flowRate : "0"} fDAIx
-                  </td>
-                  <td className="text-left p-2 text-[0.865rem]">
-                    {flowHistory
-                      ? flowHistory[0].totalAmountStreamedUntilTimestamp
-                      : "0"}
-                    fDAIx
-                  </td>
-                  <td className="text-left p-2 text-[0.865rem]">
-                    <p>{flowHistory ? flowHistory[0].timestamp : ""}</p>
-                    <p>
-                      {flowHistory
-                        ? flowHistory[flowHistory.length - 1].timestamp
-                        : ""}
-                    </p>
-                  </td>
-                  <td className="items-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="18px"
-                      viewBox="0 0 24 24"
-                      width="18px"
-                      fill="#ffffff"
-                      className="hover:bg-white hover:fill-[#1E4DD8] rounded cursor-pointer"
-                      onClick={() => {
-                        setFlowHistoryInside(!showflowHistoryInside);
-                      }}
-                    >
-                      <path d="M24 24H0V0h24v24z" fill="none" opacity=".87" />
-                      <path d="M15.88 9.29L12 13.17 8.12 9.29c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.39-1.42 0z" />
-                    </svg>
-                  </td>
-                </tr>
-              </>
-            ) : (
-              <tr>
-                <td colSpan={4}>History not available</td>
-              </tr>
-            )}
             {flowHistoryDetails.length > 0 ? (
               <>
                 {flowHistoryDetails.map((item, key) => {
@@ -518,41 +473,40 @@ function Stream() {
                           : ""}
                       </td>
                       <td className="text-left p-2 text-[0.865rem]">
-                        {flowHistory ? flowHistory[1].flowRate : "0"} fDAIx
-                      </td>
-                      <td className="text-left p-2 text-[0.865rem]">
-                        {item[0].totalAmountStreamedUntilTimestamp}
-                        fDAIx
-                      </td>
-                      <td className="text-left p-2 text-[0.865rem]">
-                        <p>{item[0].timestamp}</p>
-                        <p>
-                          {flowHistory
-                            ? flowHistory[flowHistory.length - 1].timestamp
-                            : ""}
-                        </p>
-                      </td>
-                      <td className="items-center">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="18px"
-                          viewBox="0 0 24 24"
-                          width="18px"
-                          fill="#ffffff"
-                          className="hover:bg-white hover:fill-[#1E4DD8] rounded cursor-pointer"
+                        <span
+                          className="flex flex-row items-center bg-white text-[#1E4DD8] max-w-max font-[700] cursor-pointer rounded p-2"
                           onClick={() => {
                             setItemNumber(key);
                             setFlowHistoryInside(!showflowHistoryInside);
                           }}
                         >
-                          <path
-                            d="M24 24H0V0h24v24z"
-                            fill="none"
-                            opacity=".87"
-                          />
-                          <path d="M15.88 9.29L12 13.17 8.12 9.29c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.39-1.42 0z" />
-                        </svg>
+                          Show More
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="18px"
+                            viewBox="0 0 24 24"
+                            width="18px"
+                            fill="#1E4DD8"
+                            className="hover:bg-white hover:fill-[#1E4DD8] rounded cursor-pointer ml-2"
+                          >
+                            <path
+                              d="M24 24H0V0h24v24z"
+                              fill="none"
+                              opacity=".87"
+                            />
+                            <path d="M15.88 9.29L12 13.17 8.12 9.29c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l4.59 4.59c.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41-.39-.38-1.03-.39-1.42 0z" />
+                          </svg>
+                        </span>
                       </td>
+                      <td className="text-left p-2 text-[0.865rem]">
+                        {item[0].totalAmountStreamedUntilTimestamp}
+                        <span className="ml-2">fDAIx</span>
+                      </td>
+                      <td className="text-left p-2 text-[0.865rem]">
+                        <p>{item[0].timestamp}</p>
+                        <p>{item[item.length - 1].timestamp}</p>
+                      </td>
+                      <td className="items-center"></td>
                     </tr>
                   );
                 })}

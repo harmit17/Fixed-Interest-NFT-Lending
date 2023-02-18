@@ -220,18 +220,21 @@ img.nft-image {
 }
 .popup_stream {
   position: fixed;
-  top: 50%;
-  left: 50%;
+  top: 15%;
+  left: 0;
+  right: 0;
   /* right: 11vw; */
-  transform: translate(-50%, -50%);
-  width: 90vh;
-  max-width: max-content;
+  /* transform: translate(-50%, -50%); */
+  width: 95vh;
+  margin: 0 auto;
+  max-width: 95vh;
+  height: 600px;
   /* border: 2px solid #1e4dd8; */
   /* background: radial-gradient(rgba(1, 65, 255, 0.6), rgba(1, 65, 255, 0)); */
   background: #ffffff;
   color: #1e4dd8;
   /* max-height: 80vh; */
-  overflow: auto;
+  overflow-y: auto;
   overflow-x: hidden;
   border-radius: 10px;
   box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.5);
